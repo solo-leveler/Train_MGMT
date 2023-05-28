@@ -16,11 +16,15 @@ const TicketSchema = new moongoose.Schema(
         }
     },
         {
-            timestamps : true
+            timestamps : true,
         },
     
 )
-
-const ticketModel = moongoose.model("Tickets", TicketSchema);
-
-module.exports = ticketModel
+// module.exports = async function run() {
+//     await mongoose.connect(process.env.MONGO_URL);
+//     const ticketModel = moongoose.model("Tickets", TicketSchema);
+  
+//     //await mongoose.model('Tickets').findOne(); // Works!
+//     return ticketModel
+// }    
+module.exports = TicketSchema

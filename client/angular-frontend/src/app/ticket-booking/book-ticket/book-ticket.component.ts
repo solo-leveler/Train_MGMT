@@ -3,6 +3,7 @@ import { mockResponse } from './booking-system-response';
 import { BookTicketResponseModel, TrainSeatInfoModel } from '../models/book-ticket.model';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import axios from 'axios';
+import { HttpClient } from '@angular/common/http';
 
 //import {TrainTicketMockService} from '../services/bus-ticket-service';
 
@@ -19,23 +20,27 @@ export class BookTicketComponent implements OnInit {
   public error!: string;
   public res: any;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private httpClient : HttpClient) {
     this.initateForm();
     this.getTickets();
   }
 
-  async getTickets(){
-    try {
-      const response =  await axios.get('/api/tickets/getTrainTickets')
-      if(response.data.success)
-      console.log(response)
-      else 
-      console.log(response)
-    } catch (error) {
+  // async getTickets(){
+  //   try {
+  //     const response =  await axios.get('/api/tickets/getTrainTickets')
+  //     if(response.data.success)
+  //     console.log(response)
+  //     else 
+  //     console.log(response)
+  //   } catch (error) {
       
-    }
+  //   }
+  // }
+  getTickets(){
+    this.httpClient.get('/api/tickets/getTrainTickets').subscribe(res => {
+      
+    })
   }
-
   public ngOnInit(): void {
     this.bookingInfo = mockResponse;
     this.availablseats = this.getAvailablseats();
