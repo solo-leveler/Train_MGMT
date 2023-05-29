@@ -3,7 +3,7 @@ const moongoose = require('mongoose');
 const TicketSchema = new moongoose.Schema(
     {
         seatNo : {
-            type: String,
+            type: Number,
             required : true
         },
         status : {

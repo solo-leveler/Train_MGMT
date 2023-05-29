@@ -4,46 +4,49 @@ import { BookTicketResponseModel, TrainSeatInfoModel } from '../models/book-tick
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import axios from 'axios';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../enviroment/eniroment';
 
 //import {TrainTicketMockService} from '../services/bus-ticket-service';
 
 @Component({
   selector: 'book-ticket',
   templateUrl: './book-ticket.component.html',
-  styleUrls: ['./book-ticket.component.css']
+  styleUrls: ['./book-ticket.component.css'],
+  providers : [BookTicketResponseModel]
 })
 export class BookTicketComponent implements OnInit {
-  public bookingInfo!: BookTicketResponseModel;
+  //public bookingInfo!: BookTicketResponseModel;
   public bookingForm!: FormGroup;
   public availablseats: TrainSeatInfoModel[] = [];
   public flag: boolean = true;
   public error!: string;
   public res: any;
 
-  constructor(private fb: FormBuilder,private httpClient : HttpClient) {
+  constructor(private fb: FormBuilder,private httpClient : HttpClient,public bookingInfo : BookTicketResponseModel) {
     this.initateForm();
-    this.getTickets();
+    //this.getTickets();
   }
 
-  // async getTickets(){
-  //   try {
-  //     const response =  await axios.get('/api/tickets/getTrainTickets')
-  //     if(response.data.success)
-  //     console.log(response)
-  //     else 
-  //     console.log(response)
-  //   } catch (error) {
+  async getTickets(){
+    try {
+      const response =  await axios.get(environment.apiUrl+ '/api/tickets/getTrainTickets')
+      if(response.data.length)
+      {
+        this.bookingInfo.seats = response.data
+        console.log(response)
+        this.availablseats = this.getAvailablseats();
+      }
+      else 
+      console.log(response)
+    } catch (error) {
       
-  //   }
-  // }
-  getTickets(){
-    this.httpClient.get('/api/tickets/getTrainTickets').subscribe(res => {
-      
-    })
+    }
   }
+ 
   public ngOnInit(): void {
-    this.bookingInfo = mockResponse;
-    this.availablseats = this.getAvailablseats();
+    this.getTickets();
+    //this.bookingInfo = mockResponse;
+    //this.availablseats = this.getAvailablseats();
     //let busTicketMockService = new TrainTicketMockService();
     //this.res = busTicketMockService.get();
   }
@@ -53,10 +56,9 @@ export class BookTicketComponent implements OnInit {
     const requiredSeats: number = parseInt(formValues.controls['count'].value);
     if (requiredSeats > this.availablseats.length) {
       this.error = "required seats not available";
-    } else if (requiredSeats > 0) {
-      this.checkInCategorys(userName, requiredSeats);
-    }
-
+    } 
+    else 
+    this.flag =false
   }
 
   public openBookingForm(): void {
@@ -78,52 +80,16 @@ export class BookTicketComponent implements OnInit {
     return availablseats;
   }
 
-  private checkInCategorys(name: string, count: number): void {
-    let category2: TrainSeatInfoModel[] = [];
-    let category3: TrainSeatInfoModel[] = [];
-    let random: TrainSeatInfoModel[] = [];
-    if (count === 1) {
-      category2 = this.checkInCategory(count, 2);
-      if (category2.length !== 0) {
-        this.bookSeat(category2, name);
-      } else {
-        category3 = this.checkInCategory(count, 3);
-        if (category3.length !== 0) {
-          this.bookSeat(category3, name);
-        }
-      }
-    } else if (count === 2) {
-      category2 = this.checkInCategory(count, 2);
-      if (category2.length !== 0) {
-        this.bookSeat(category2, name);
-      } else {
-        category3 = this.checkInCategory(count, 3);
-        if (category3.length !== 0) {
-          this.bookSeat(category3, name);
-        } else {
-          this.bookSeat(this.getRandomSeats(count), name);
-        }
+  
 
-      }
-    } else if(count === 3){
-      category3 = this.checkInCategory(count, 3);
-        if (category3.length !== 0) {
-          this.bookSeat(category3, name);
-        } else {
-          this.bookSeat(this.getRandomSeats(count), name);
-        }
-    } else {
-        this.bookSeat(this.getRandomSeats(count), name);
-    }
-
-  }
-
-  private bookSeat(bookseats: TrainSeatInfoModel[], name: string): void {
-    bookseats.forEach(seat => {
-      const index: number = this.bookingInfo.seats.findIndex(data => data.seatNo === seat.seatNo);
-      this.bookingInfo.seats[index].status = "booked";
-      this.bookingInfo.seats[index].bookedBy = name;
-    });
+  public bookSeat(bookseats: TrainSeatInfoModel): void {
+    
+      const index: number = this.bookingInfo.seats.findIndex(data => data.seatNo === bookseats.seatNo);
+      if (this.bookingInfo.seats[index].status != "available")      
+        this.bookingInfo.seats[index].status = "available";
+      else
+      this.bookingInfo.seats[index].status = "selected";
+    
 
     this.availablseats = this.getAvailablseats();
 
@@ -176,7 +142,7 @@ export class BookTicketComponent implements OnInit {
 
   private initateForm(): void {
     this.bookingForm = this.fb.group({
-      name: ['', Validators.required],
+      name: [''],
       count: ['', Validators.required]
     });
   }

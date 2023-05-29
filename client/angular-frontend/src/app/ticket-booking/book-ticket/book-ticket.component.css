@@ -30,7 +30,7 @@ margin-right: 20px
 }
 
 .seat {
-width: 20px;
+width: 50px;
 padding: 0 5px;
 }
 
@@ -39,6 +39,7 @@ padding: 0 5px;
 }
 .booked {
    background: #F42536;
+   pointer-events: none;
 }
 
 .available{
