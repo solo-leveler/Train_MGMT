@@ -1,41 +1,48 @@
 const express = require('express');
 const router = express.Router();
-const ticketModel = require ('../models/ticketModel')
 const app = express()  
 const mongoose = require('mongoose');
 const TicketSchema = require('../models/ticketModel') 
 
-router.get('/bookTrainTickets', async function (req, res) {
-  const newticket = new ticketModel(req.body);
-  try{
-    await mongoose.connect(process.env.MONGO_URL);
-    mongoose.model('Tickets', TicketSchema);
-    re.body.forEach(async element => {
-      const ticket = await mongoose.model('Tickets').findOneAndUpdate({
-        seatNo: req.body.seatNo,
-        row: req.body.row
-      },{
-        $set: {
-          status:"booked"
-        }
-      });
-      
-    });
-    res.status(200).send('Booked Successfully!!');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Internal Server Error');
+router.post('/bookTrainTickets', async (req, res) => {
+  try {
+    let ticketsToUpdate = req.body;
+    if (!Array.isArray(ticketsToUpdate)) {
+      const singleTicket = ticketsToUpdate;
+      ticketsToUpdate = [singleTicket];
+    }
+    const updatedTickets = [];
+    const ticketModel = mongoose.model('Ticket', TicketSchema);
+    for (const ticket of ticketsToUpdate) {
+      const { seatNo, row, status } = ticket;
+
+      const updatedTicket = await ticketModel.findOneAndUpdate(
+        { seatNo ,row },
+        { $set: { status } },
+        { new: true }
+      );
+
+      if (!updatedTicket) {
+        return res.status(404).json({ success: false, message: `Ticket not found: ${ticketId}` });
+      }
+
+      updatedTickets.push(updatedTicket);
+    }
+
+    return res.status(200).json({ success: true,message: `Ticket Booked Successfully` });
+  } catch (error) {
+    console.error('Error updating tickets:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
   }
-  
-  
 });
+
 
 router.get('/getTrainTickets', async function (req, res) {
   try {
     await mongoose.connect(process.env.MONGO_URL);
     mongoose.model('Tickets', TicketSchema);
     
-    const ticket = await mongoose.model('Tickets').find();
+    const ticket = await mongoose.model('Tickets').find().sort({ "seatNo" : 1});
     res.send(ticket);
   } catch (err) {
     console.error(err);

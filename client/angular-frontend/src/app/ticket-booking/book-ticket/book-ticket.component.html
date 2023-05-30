@@ -1,128 +1,128 @@
 <div *ngIf="flag">
   <form [formGroup]="bookingForm" (ngSubmit)="onSubmit(bookingForm)">
-
-    <mat-label class="center-block">Number of Seats: </mat-label>
-    <mat-form-field appearance="outline">
-      <input matInput type="number" formControlName="count" />
-    </mat-form-field>
-    <button mat-flat-button color="primary" type="submit">Book</button>
+    
+    <label class="center-block">Number of Seats:
+      <input type="number" class="form-control" formControlName="count">
+    </label>
+    <label class="center-block"> User Name :
+      <input class="form-control" formControlName="name">
+    </label>
+    <button type="submit" [disabled]="!bookingForm.valid" >Book</button>
     <div>{{error}}</div>
   </form>
 </div>
+
 <div class="conformation-container" *ngIf="!flag">
-  <div class="seat-row">
-    <div *ngFor="let seat of bookingInfo.seats">
-      <div class="seat" [ngClass]="seat.seatNo === 3? 'divide-category': ''" *ngIf="seat.row === 1">
-        <label class="seat-label"
-          [ngClass]="seat.status=== 'booked' ?  'booked'  : seat.status=== 'available' ? 'available' : 'selected'"  (click)="bookSeat(seat)">
-          {{seat.seatNo}}</label>
-      </div>
+  
+<div class="seat-row">
+  <div  *ngFor ="let seat of bookingInfo.seats">
+    <div  class="seat" [ngClass] = "seat.seatNo === 3? 'divide-category': ''"  *ngIf="seat.row === 1" >
+      <label class="seat-label" [ngClass] = "seat.status=== 'booked' ? (bookingForm.controls['name'].value === seat.bookedBy ? 'selected' : 'booked'): 'available'">
+        {{seat.seatNo}}</label>
     </div>
   </div>
-  <div class="seat-row">
-    <div *ngFor="let seat of bookingInfo.seats">
-      <div class="seat" [ngClass]="seat.seatNo === 10? 'divide-category': ''" *ngIf="seat.row === 2">
-        <label class="seat-label"
-        [ngClass]="seat.status=== 'booked' ?  'booked'  : seat.status=== 'available' ? 'available' : 'selected'"  (click)="bookSeat(seat)">
-          {{seat.seatNo}}</label>
-      </div>
+</div>
+<div class="seat-row">
+  <div  *ngFor ="let seat of bookingInfo.seats">
+    <div  class="seat" [ngClass] = "seat.seatNo === 10? 'divide-category': ''"*ngIf="seat.row === 2" >
+      <label class="seat-label" [ngClass] = "seat.status=== 'booked' ? (bookingForm.controls['name'].value === seat.bookedBy ? 'selected' : 'booked'): 'available'">
+        {{seat.seatNo}}</label>
     </div>
   </div>
-  <div class="seat-row">
-    <div *ngFor="let seat of bookingInfo.seats">
-      <div class="seat" [ngClass]="seat.seatNo === 17? 'divide-category': ''" *ngIf="seat.row === 3">
-        <label class="seat-label"
-        [ngClass]="seat.status=== 'booked' ?  'booked'  : seat.status=== 'available' ? 'available' : 'selected'"  (click)="bookSeat(seat)">
-          {{seat.seatNo}}</label>
-      </div>
+</div>
+<div class="seat-row">
+  <div  *ngFor ="let seat of bookingInfo.seats">
+    <div class="seat" [ngClass] = "seat.seatNo === 17? 'divide-category': ''" *ngIf="seat.row === 3" >
+      <label class="seat-label" [ngClass] = "seat.status=== 'booked' ? (bookingForm.controls['name'].value === seat.bookedBy ? 'selected' : 'booked'): 'available'">
+        {{seat.seatNo}}</label>
     </div>
   </div>
-  <div class="seat-row">
-    <div *ngFor="let seat of bookingInfo.seats">
-      <div class="seat" [ngClass]="seat.seatNo === 24? 'divide-category': ''" *ngIf="seat.row === 4">
-        <label class="seat-label"
-          [ngClass]="seat.status=== 'booked' ?  'booked'  : seat.status=== 'available' ? 'available' : 'selected'"  (click)="bookSeat(seat)">
-          {{seat.seatNo}}</label>
-      </div>
+</div>
+<div class="seat-row">
+  <div *ngFor ="let seat of bookingInfo.seats">
+    <div class="seat" [ngClass] = "seat.seatNo === 24? 'divide-category': ''"*ngIf="seat.row === 4" >
+      <label class="seat-label" [ngClass] = "seat.status=== 'booked' ? (bookingForm.controls['name'].value === seat.bookedBy ? 'selected' : 'booked'): 'available'">
+        {{seat.seatNo}}</label>
     </div>
   </div>
-  <div class="seat-row">
-    <div *ngFor="let seat of bookingInfo.seats">
-      <div class="seat" [ngClass]="seat.seatNo === 31? 'divide-category': ''" *ngIf="seat.row === 5">
-        <label class="seat-label"
-          [ngClass]="seat.status=== 'booked' ?  'booked'  : seat.status=== 'available' ? 'available' : 'selected'"  (click)="bookSeat(seat)">
-          {{seat.seatNo}}</label>
-      </div>
+</div>
+<div class="seat-row">
+  <div  *ngFor ="let seat of bookingInfo.seats">
+    <div class="seat" [ngClass] = "seat.seatNo === 31? 'divide-category': ''" *ngIf="seat.row === 5" >
+      <label class="seat-label"  [ngClass] = "seat.status=== 'booked' ? (bookingForm.controls['name'].value === seat.bookedBy ? 'selected' : 'booked'): 'available'">
+        {{seat.seatNo}}</label>
     </div>
   </div>
-  <div class="seat-row">
-    <div *ngFor="let seat of bookingInfo.seats">
-      <div class="seat" [ngClass]="seat.seatNo === 38? 'divide-category': ''" *ngIf="seat.row === 6">
-        <label class="seat-label"
-          [ngClass]="seat.status=== 'booked' ?  'booked'  : seat.status=== 'available' ? 'available' : 'selected'"  (click)="bookSeat(seat)">
-          {{seat.seatNo}}</label>
-      </div>
-    </div>
   </div>
   <div class="seat-row">
-    <div *ngFor="let seat of bookingInfo.seats">
-      <div class="seat" [ngClass]="seat.seatNo === 45? 'divide-category': ''" *ngIf="seat.row === 7">
-        <label class="seat-label"
-          [ngClass]="seat.status=== 'booked' ?  'booked'  : seat.status=== 'available' ? 'available' : 'selected'"  (click)="bookSeat(seat)">
-          {{seat.seatNo}}</label>
-      </div>
+  <div  *ngFor ="let seat of bookingInfo.seats">
+    <div class="seat" [ngClass] = "seat.seatNo === 38? 'divide-category': ''" *ngIf="seat.row === 6" >
+      <label class="seat-label"  [ngClass] = "seat.status=== 'booked' ? (bookingForm.controls['name'].value === seat.bookedBy ? 'selected' : 'booked'): 'available'">
+        {{seat.seatNo}}</label>
     </div>
   </div>
-  <div class="seat-row">
-    <div *ngFor="let seat of bookingInfo.seats">
-      <div class="seat" [ngClass]="seat.seatNo === 52? 'divide-category': ''" *ngIf="seat.row === 8">
-        <label class="seat-label"
-          [ngClass]="seat.status=== 'booked' ?  'booked'  : seat.status=== 'available' ? 'available' : 'selected'"  (click)="bookSeat(seat)">
-          {{seat.seatNo}}</label>
-      </div>
+</div>
+ <div class="seat-row">
+  <div  *ngFor ="let seat of bookingInfo.seats">
+    <div class="seat" [ngClass] = "seat.seatNo === 45? 'divide-category': ''" *ngIf="seat.row === 7" >
+      <label class="seat-label"  [ngClass] = "seat.status=== 'booked' ? (bookingForm.controls['name'].value === seat.bookedBy ? 'selected' : 'booked'): 'available'">
+        {{seat.seatNo}}</label>
     </div>
   </div>
-  <div class="seat-row">
-    <div *ngFor="let seat of bookingInfo.seats">
-      <div class="seat" [ngClass]="seat.seatNo === 59? 'divide-category': ''" *ngIf="seat.row === 9">
-        <label class="seat-label"
-          [ngClass]="seat.status=== 'booked' ?  'booked'  : seat.status=== 'available' ? 'available' : 'selected'"  (click)="bookSeat(seat)">
-          {{seat.seatNo}}</label>
-      </div>
+</div>
+ <div class="seat-row">
+  <div  *ngFor ="let seat of bookingInfo.seats">
+    <div class="seat" [ngClass] = "seat.seatNo === 52? 'divide-category': ''" *ngIf="seat.row === 8" >
+      <label class="seat-label"  [ngClass] = "seat.status=== 'booked' ? (bookingForm.controls['name'].value === seat.bookedBy ? 'selected' : 'booked'): 'available'">
+        {{seat.seatNo}}</label>
     </div>
+  </div>
+</div>
+<div class="seat-row">
+  <div  *ngFor ="let seat of bookingInfo.seats">
+    <div class="seat" [ngClass] = "seat.seatNo === 59? 'divide-category': ''" *ngIf="seat.row === 9" >
+      <label class="seat-label"  [ngClass] = "seat.status=== 'booked' ? (bookingForm.controls['name'].value === seat.bookedBy ? 'selected' : 'booked'): 'available'">
+        {{seat.seatNo}}</label>
+    </div>
+  </div>
+  
+</div>
+<div class="seat-row">
+  <div  *ngFor ="let seat of bookingInfo.seats">
+    <div class="seat" [ngClass] = "seat.seatNo === 66? 'divide-category': ''" *ngIf="seat.row === 10" >
+      <label class="seat-label"  [ngClass] = "seat.status=== 'booked' ? (bookingForm.controls['name'].value === seat.bookedBy ? 'selected' : 'booked'): 'available'">
+        {{seat.seatNo}}</label>
+    </div>
+  </div>
+  
+</div>
+<div class="seat-row">
+  <div  *ngFor ="let seat of bookingInfo.seats">
+    <div class="seat" [ngClass] = "seat.seatNo === 73? 'divide-category': ''" *ngIf="seat.row === 11" >
+      <label class="seat-label"  [ngClass] = "seat.status=== 'booked' ? (bookingForm.controls['name'].value === seat.bookedBy ? 'selected' : 'booked'): 'available'">
+        {{seat.seatNo}}</label>
+    </div>
+  </div>
+  
+</div>
+<div class="seat-row">
+  <div  *ngFor ="let seat of bookingInfo.seats">
+    <div class="seat" [ngClass] = "seat.seatNo === 76? 'divide-category': ''" *ngIf="seat.row === 12" >
+      <label class="seat-label"  [ngClass] = "seat.status=== 'booked' ? (bookingForm.controls['name'].value === seat.bookedBy ? 'selected' : 'booked'): 'available'">
+        {{seat.seatNo}}</label>
+    </div>
+  </div>
+  
+</div>
 
-  </div>
-  <div class="seat-row">
-    <div *ngFor="let seat of bookingInfo.seats">
-      <div class="seat" [ngClass]="seat.seatNo === 66? 'divide-category': ''" *ngIf="seat.row === 10">
-        <label class="seat-label"
-          [ngClass]="seat.status=== 'booked' ?  'booked'  : seat.status=== 'available' ? 'available' : 'selected'"  (click)="bookSeat(seat)">
-          {{seat.seatNo}}</label>
-      </div>
-    </div>
 
-  </div>
-  <div class="seat-row">
-    <div *ngFor="let seat of bookingInfo.seats">
-      <div class="seat" [ngClass]="seat.seatNo === 73? 'divide-category': ''" *ngIf="seat.row === 11">
-        <label class="seat-label"
-          [ngClass]="seat.status=== 'booked' ?  'booked'  : seat.status=== 'available' ? 'available' : 'selected'"  (click)="bookSeat(seat)">
-          {{seat.seatNo}}</label>
-      </div>
-    </div>
-
-  </div>
-  <div class="seat-row">
-    <div *ngFor="let seat of bookingInfo.seats">
-      <div class="seat" [ngClass]="seat.seatNo === 76? 'divide-category': ''" *ngIf="seat.row === 12">
-        <label class="seat-label"
-          [ngClass]="seat.status=== 'booked' ?  'booked'  : seat.status=== 'available' ? 'available' : 'selected'"  (click)="bookSeat(seat)">
-          {{seat.seatNo}}</label>
-      </div>
-    </div>
-
-  </div>
-  <div class="new-booking">
-    <button mat-flat-button (click)="openBookingForm()"> New Booking</button>
-  </div>
+<div class="new-booking">
+  <button (click)="openBookingForm()"> New Booking</button>
+  <button (click)="openBookingForm()"> Confirm Booking</button>
+</div>
+<div class="new-booking">
+  <h3 class="a2">Available : {{displaydata?.available?.length}} </h3>
+  <h3 class="a3">Selected : {{displaydata?.selected?.length}} </h3>
+  <h3 class="a4">Booked : {{displaydata?.booked?.length}} </h3>
+</div>
 </div>

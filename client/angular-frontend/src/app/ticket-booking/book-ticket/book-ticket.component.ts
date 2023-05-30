@@ -17,6 +17,7 @@ import { environment } from '../../../enviroment/eniroment';
 export class BookTicketComponent implements OnInit {
   //public bookingInfo!: BookTicketResponseModel;
   public bookingForm!: FormGroup;
+  public displaydata:any;
   public availablseats: TrainSeatInfoModel[] = [];
   public flag: boolean = true;
   public error!: string;
@@ -26,7 +27,6 @@ export class BookTicketComponent implements OnInit {
     this.initateForm();
     //this.getTickets();
   }
-
   async getTickets(){
     try {
       const response =  await axios.get(environment.apiUrl+ '/api/tickets/getTrainTickets')
@@ -42,23 +42,28 @@ export class BookTicketComponent implements OnInit {
       
     }
   }
- 
-  public ngOnInit(): void {
-    this.getTickets();
-    //this.bookingInfo = mockResponse;
-    //this.availablseats = this.getAvailablseats();
-    //let busTicketMockService = new TrainTicketMockService();
-    //this.res = busTicketMockService.get();
+  async bookTicket(){
+    try {
+      
+    } catch (error) {
+      
+    }
   }
-
+  public ngOnInit(): void {
+    //this.bookingInfo = mockResponse;
+    this.getTickets()
+    this.availablseats = this.getAvailablseats();
+  }
+  //Validation to check if user will try to book the seats greater then 7
   public onSubmit(formValues: FormGroup): void {
     const userName: string = formValues.controls['name'].value;
     const requiredSeats: number = parseInt(formValues.controls['count'].value);
-    if (requiredSeats > this.availablseats.length) {
-      this.error = "required seats not available";
-    } 
-    else 
-    this.flag =false
+    if (requiredSeats > 7) {
+      this.error = "Please enter seat number less then 8";
+    } else if (requiredSeats > 0) {
+      this.checkInCategorys(userName, requiredSeats);
+    }
+
   }
 
   public openBookingForm(): void {
@@ -69,7 +74,7 @@ export class BookTicketComponent implements OnInit {
   this.flag = true;
   this.error = '';
 }
-
+//This code checks the seats availability and return the available seats list 
   private getAvailablseats(): TrainSeatInfoModel[] {
     let availablseats: TrainSeatInfoModel[] = []
     this.bookingInfo.seats.forEach(seat => {
@@ -77,19 +82,72 @@ export class BookTicketComponent implements OnInit {
         availablseats.push(seat);
       }
     });
+    this.showDisplayData();
     return availablseats;
   }
 
-  
+//This code will show the display data
+  private showDisplayData(){
+    this.displaydata = this.bookingInfo.seats.reduce((acc:Record<string, any>,cv) => {
+      if(cv['status']) (acc[cv['status']] ||= []).push(cv);
+      return acc;
+    },{})
+    // const selectedSeatCount = this.displaydata.selected.reduce((count: number, seat: { bookedBy: any; }) => {
+    //   if (seat.bookedBy === this.bookingForm.controls['name'].value) {
+    //     return count + 1;
+    //   }
+    //   return count;
+    // }, 0);
+    // this.displaydata.selected  = selectedSeatCount
+    console.log(this.displaydata)
+  } 
+//This code will booked the seats in row priority
+  private checkInCategorys(name: string, count: number): void {
+    let category2: TrainSeatInfoModel[] = [];
+    let category3: TrainSeatInfoModel[] = [];
+    let random: TrainSeatInfoModel[] = [];
+    if (count === 1) {
+      category2 = this.checkInCategory(count, 2);
+      if (category2.length !== 0) {
+        this.bookSeat(category2, name);
+      } else {
+        category3 = this.checkInCategory(count, 3);
+        if (category3.length !== 0) {
+          this.bookSeat(category3, name);
+        }
+      }
+    } else if (count === 2) {
+      category2 = this.checkInCategory(count, 2);
+      if (category2.length !== 0) {
+        this.bookSeat(category2, name);
+      } else {
+        category3 = this.checkInCategory(count, 3);
+        if (category3.length !== 0) {
+          this.bookSeat(category3, name);
+        } else {
+          this.bookSeat(this.getRandomSeats(count), name);
+        }
 
-  public bookSeat(bookseats: TrainSeatInfoModel): void {
-    
-      const index: number = this.bookingInfo.seats.findIndex(data => data.seatNo === bookseats.seatNo);
-      if (this.bookingInfo.seats[index].status != "available")      
-        this.bookingInfo.seats[index].status = "available";
-      else
-      this.bookingInfo.seats[index].status = "selected";
-    
+      }
+    } else if(count === 3){
+      category3 = this.checkInCategory(count, 3);
+        if (category3.length !== 0) {
+          this.bookSeat(category3, name);
+        } else {
+          this.bookSeat(this.getRandomSeats(count), name);
+        }
+    } else {
+        this.bookSeat(this.getRandomSeats(count), name);
+    }
+
+  }
+
+  private bookSeat(bookseats: TrainSeatInfoModel[], name: string): void {
+    bookseats.forEach(seat => {
+      const index: number = this.bookingInfo.seats.findIndex(data => data.seatNo === seat.seatNo);
+      this.bookingInfo.seats[index].status = "booked";
+      this.bookingInfo.seats[index].bookedBy = name;
+    });
 
     this.availablseats = this.getAvailablseats();
 
@@ -115,7 +173,7 @@ export class BookTicketComponent implements OnInit {
       return [];
     }
   }
-
+//This code will check the user will be given the seats in same row
   private chekIfSameRow(bookseats: TrainSeatInfoModel[]): TrainSeatInfoModel[] {
     let row: number[] = [];
     bookseats.forEach(seat => {
@@ -142,7 +200,7 @@ export class BookTicketComponent implements OnInit {
 
   private initateForm(): void {
     this.bookingForm = this.fb.group({
-      name: [''],
+      name: ['', [Validators.pattern('^[a-zA-Z \-\']+'),Validators.required]],
       count: ['', Validators.required]
     });
   }
