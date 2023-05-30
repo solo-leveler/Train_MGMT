@@ -27,4 +27,5 @@ const TicketSchema = new moongoose.Schema(
 //     //await mongoose.model('Tickets').findOne(); // Works!
 //     return ticketModel
 // }    
-module.exports = TicketSchema
+const ticketModel = moongoose.model('Ticket', TicketSchema);
+module.exports = ticketModel

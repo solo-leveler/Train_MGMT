@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const app = express()  
+const app = express() 
+const ticketModel = require('../models/ticketModel') 
 const mongoose = require('mongoose');
 const TicketSchema = require('../models/ticketModel') 
 
@@ -12,7 +13,7 @@ router.post('/bookTrainTickets', async (req, res) => {
       ticketsToUpdate = [singleTicket];
     }
     const updatedTickets = [];
-    const ticketModel = mongoose.model('Ticket', TicketSchema);
+    //const ticketModel = mongoose.model('Ticket', TicketSchema);
     for (const ticket of ticketsToUpdate) {
       const { seatNo, row, status } = ticket;
 
@@ -40,9 +41,9 @@ router.post('/bookTrainTickets', async (req, res) => {
 router.get('/getTrainTickets', async function (req, res) {
   try {
     await mongoose.connect(process.env.MONGO_URL);
-    mongoose.model('Tickets', TicketSchema);
+    //mongoose.model('Tickets', TicketSchema);
     
-    const ticket = await mongoose.model('Tickets').find().sort({ "seatNo" : 1});
+    const ticket = await ticketModel.find().sort({ "seatNo" : 1});
     res.send(ticket);
   } catch (err) {
     console.error(err);
