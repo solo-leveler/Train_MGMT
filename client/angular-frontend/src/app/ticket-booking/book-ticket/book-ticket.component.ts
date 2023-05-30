@@ -42,13 +42,19 @@ export class BookTicketComponent implements OnInit {
       
     }
   }
-  async bookTicket(){
+  async bookTrainTickets(tickets: any) {
     try {
-      
+      const response = await axios.post('/api/tickets/bookTrainTickets', tickets);
+      if (response.data.success) {
+        console.log(response.data.data); // Updated tickets
+      } else {
+        console.log(response.data.message); // Error message
+      }
     } catch (error) {
-      
+      console.error('Error booking train tickets:', error);
     }
   }
+  
   public ngOnInit(): void {
     //this.bookingInfo = mockResponse;
     this.getTickets()
