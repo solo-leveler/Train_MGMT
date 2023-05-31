@@ -11,6 +11,12 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended : false}));
 
+
+app.use(express.static(path.join(__dirname,"./client/angular-frontend/dist/angular-frontend")))
+app.get("*",(req,res)=>{
+    res.sendFile(path.join(__dirname,"./client/angular-frontend/dist/angular-frontend/index.html"))
+})
+
 mongoose.connect(process.env.MONGO_URL, {
     dbName: "TRAIN_MGMT",
     useNewUrlParser: true,
@@ -24,12 +30,7 @@ mongoose.connect(process.env.MONGO_URL, {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 const ticketRoutes = require("./routes/routes")
-
 app.use("/api/tickets", ticketRoutes)
-app.use(express.static(path.join(__dirname,"./client/angular-frontend/dist")))
-app.get("*",(req,res)=>{
-    res.sendFile(path.join(__dirname,"./client/angular-frontend/dist/angular-frontend/index.html"))
-})
 
 const port = process.env.PORT || 8080
 app.listen(port ,function(){
