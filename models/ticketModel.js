@@ -13,6 +13,10 @@ const TicketSchema = new moongoose.Schema(
         row :{
             type : Number,
             required : true
+        },
+        bookedBy : {
+            type: String,
+            required : true
         }
     },
         {

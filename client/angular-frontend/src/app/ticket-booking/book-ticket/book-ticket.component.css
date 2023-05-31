@@ -49,8 +49,32 @@ padding: 0 5px;
 .new-booking{
 clear: both;
 padding: 10px 0;
+display: flex;
 }
 .conformation-container{
     width: 300px;
     margin: 0 auto;
+}
+/* div{
+    display: grid;
+    justify-content: space-around;
+} */
+.flex-container {
+    display: grid;
+    justify-content: space-around;
+    gap: 10px;
+}
+.available-button {
+    background-color: lightgreen !important;
+    margin-left:  10px;
+}
+.dot{
+  height: 12px;
+  width: 12px;
+  /* background-color: green; */
+  border-radius: 50%;
+  display: inline-block;
+}
+mat-chip{
+    margin-left: 10px;
 }

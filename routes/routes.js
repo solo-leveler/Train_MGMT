@@ -3,7 +3,6 @@ const router = express.Router();
 const app = express() 
 const ticketModel = require('../models/ticketModel') 
 const mongoose = require('mongoose');
-const TicketSchema = require('../models/ticketModel') 
 
 router.post('/bookTrainTickets', async (req, res) => {
   try {
@@ -15,11 +14,11 @@ router.post('/bookTrainTickets', async (req, res) => {
     const updatedTickets = [];
     //const ticketModel = mongoose.model('Ticket', TicketSchema);
     for (const ticket of ticketsToUpdate) {
-      const { seatNo, row, status } = ticket;
+      const { seatNo, row, status,bookedBy } = ticket;
 
       const updatedTicket = await ticketModel.findOneAndUpdate(
         { seatNo ,row },
-        { $set: { status } },
+        { $set: { status,bookedBy } },
         { new: true }
       );
 

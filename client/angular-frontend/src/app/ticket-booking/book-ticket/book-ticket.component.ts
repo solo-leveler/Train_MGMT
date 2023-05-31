@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { mockResponse } from './booking-system-response';
 import { BookTicketResponseModel, TrainSeatInfoModel } from '../models/book-ticket.model';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -12,7 +12,8 @@ import { environment } from '../../../enviroment/eniroment';
   selector: 'book-ticket',
   templateUrl: './book-ticket.component.html',
   styleUrls: ['./book-ticket.component.css'],
-  providers : [BookTicketResponseModel]
+  providers : [BookTicketResponseModel],
+  encapsulation: ViewEncapsulation.None
 })
 export class BookTicketComponent implements OnInit {
   //public bookingInfo!: BookTicketResponseModel;
@@ -21,7 +22,7 @@ export class BookTicketComponent implements OnInit {
   public availablseats: TrainSeatInfoModel[] = [];
   public flag: boolean = true;
   public error!: string;
-  public res: any;
+  public res: any; 
 
   constructor(private fb: FormBuilder,private httpClient : HttpClient,public bookingInfo : BookTicketResponseModel) {
     this.initateForm();
@@ -33,6 +34,7 @@ export class BookTicketComponent implements OnInit {
       if(response.data.length)
       {
         this.bookingInfo.seats = response.data
+        //this.copybookingInfo.seats = JSON.parse(JSON.stringify(this.bookingInfo.seats))
         console.log(response)
         this.availablseats = this.getAvailablseats();
       }
@@ -42,11 +44,12 @@ export class BookTicketComponent implements OnInit {
       
     }
   }
-  async bookTrainTickets(tickets: any) {
+  async bookTrainTickets() {
     try {
-      const response = await axios.post('/api/tickets/bookTrainTickets', tickets);
+      const response = await axios.post(environment.apiUrl+'/api/tickets/bookTrainTickets', this.displaydata.selected);
       if (response.data.success) {
         console.log(response.data.data); // Updated tickets
+        window.alert("Booked Successfully")
       } else {
         console.log(response.data.message); // Error message
       }
@@ -79,6 +82,7 @@ export class BookTicketComponent implements OnInit {
   });
   this.flag = true;
   this.error = '';
+  this.getTickets();
 }
 //This code checks the seats availability and return the available seats list 
   private getAvailablseats(): TrainSeatInfoModel[] {
@@ -98,14 +102,14 @@ export class BookTicketComponent implements OnInit {
       if(cv['status']) (acc[cv['status']] ||= []).push(cv);
       return acc;
     },{})
-    // const selectedSeatCount = this.displaydata.selected.reduce((count: number, seat: { bookedBy: any; }) => {
+    // const selectedSeatCount = this.displaydata.booked.reduce((count: number, seat: { bookedBy: any; }) => {
     //   if (seat.bookedBy === this.bookingForm.controls['name'].value) {
     //     return count + 1;
     //   }
     //   return count;
     // }, 0);
-    // this.displaydata.selected  = selectedSeatCount
-    console.log(this.displaydata)
+    //this.displaydata.selected  = selectedSeatCount
+    console.log(this.displaydata)    
   } 
 //This code will booked the seats in row priority
   private checkInCategorys(name: string, count: number): void {
@@ -151,7 +155,7 @@ export class BookTicketComponent implements OnInit {
   private bookSeat(bookseats: TrainSeatInfoModel[], name: string): void {
     bookseats.forEach(seat => {
       const index: number = this.bookingInfo.seats.findIndex(data => data.seatNo === seat.seatNo);
-      this.bookingInfo.seats[index].status = "booked";
+      this.bookingInfo.seats[index].status = "selected";
       this.bookingInfo.seats[index].bookedBy = name;
     });
 
