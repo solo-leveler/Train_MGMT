@@ -31,7 +31,6 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 const ticketRoutes = require("./routes/routes")
 app.use("/api/tickets", ticketRoutes)
-
 const port = process.env.PORT || 8080
 app.listen(port ,function(){
     console.log("Node Server at port " + port);

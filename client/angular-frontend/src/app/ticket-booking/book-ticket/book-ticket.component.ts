@@ -4,7 +4,6 @@ import { BookTicketResponseModel, TrainSeatInfoModel } from '../models/book-tick
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import axios from 'axios';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../enviroment/eniroment';
 
 //import {TrainTicketMockService} from '../services/bus-ticket-service';
 
