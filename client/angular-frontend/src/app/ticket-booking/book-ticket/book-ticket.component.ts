@@ -30,7 +30,7 @@ export class BookTicketComponent implements OnInit {
   }
   async getTickets(){
     try {
-      const response =  await axios.get(environment.apiUrl+ '/api/tickets/getTrainTickets')
+      const response =  await axios.get('/api/tickets/getTrainTickets')
       if(response.data.length)
       {
         this.bookingInfo.seats = response.data
@@ -46,7 +46,7 @@ export class BookTicketComponent implements OnInit {
   }
   async bookTrainTickets() {
     try {
-      const response = await axios.post(environment.apiUrl+'/api/tickets/bookTrainTickets', this.displaydata.selected);
+      const response = await axios.post('/api/tickets/bookTrainTickets', this.displaydata.selected);
       if (response.data.success) {
         console.log(response.data.data); // Updated tickets
         window.alert("Booked Successfully")
