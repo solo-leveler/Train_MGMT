@@ -4,11 +4,13 @@
   "description": "MEAN Stack application for train booking system",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@angular/flex-layout": "^15.0.0-beta.42",
     "@angular/material": "^16.0.2",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
