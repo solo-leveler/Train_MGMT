@@ -63,9 +63,6 @@ THE SOFTWARE.
 @angular/platform-browser
 MIT
 
-@angular/router
-MIT
-
 axios
 MIT
 # Copyright (c) 2014-present Matt Zabriskie & Collaborators

@@ -18,7 +18,7 @@ router.post('/bookTrainTickets', async (req, res) => {
 
       const updatedTicket = await ticketModel.findOneAndUpdate(
         { seatNo ,row },
-        { $set: { status,bookedBy } },
+        { $set: { status:"booked",bookedBy } },
         { new: true }
       );
 
