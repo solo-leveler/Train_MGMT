@@ -49,4 +49,20 @@ router.get('/getTrainTickets', async function (req, res) {
     res.status(500).send('Internal Server Error');
   }
 });
+
+router.post('/clearBooking', async (req, res) => {  try {
+
+    // Update all tickets with the specified status
+    const updateResult = await ticketModel.updateMany({}, { $set: { status : 'available' } });
+
+    if (updateResult.nModified > 0) {
+      return res.status(200).json({ success: true, message: 'Tickets updated successfully' });
+    } else {
+      return res.status(404).json({ success: false, message: 'No tickets found for update' });
+    }
+  } catch (error) {
+    console.error('Error updating tickets:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
 module.exports =router

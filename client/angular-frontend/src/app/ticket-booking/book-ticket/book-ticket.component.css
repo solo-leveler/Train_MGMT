@@ -52,8 +52,10 @@ padding: 10px 0;
 display: flex;
 }
 .conformation-container{
-    width: 300px;
-    margin: 0 auto;
+    display: inline-grid;
+    position: absolute;
+    left: 40%;
+    
 }
 /* div{
     display: grid;

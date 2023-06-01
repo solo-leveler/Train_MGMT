@@ -29,7 +29,7 @@ fxLayoutAlign="space-between center">
   <div  *ngFor ="let seat of bookingInfo.seats">
     <div  class="seat" [ngClass] = "seat.seatNo === 3? 'divide-category': ''"  *ngIf="seat.row === 1" >
       <label class="seat-label" [ngClass]="seat.status=== 'booked' ?  'booked'  : seat.status=== 'available' ? 'available' : 'selected'" 
-      matTooltip="Booked By : {{ seat.bookedBy}}">
+      matTooltip="Booked By : {{ seat.bookedBy}}" [matTooltipDisabled]="seat.status=== 'available'">
         {{seat.seatNo}}</label>
         
     </div>
@@ -39,7 +39,7 @@ fxLayoutAlign="space-between center">
   <div  *ngFor ="let seat of bookingInfo.seats">
     <div  class="seat" [ngClass] = "seat.seatNo === 10? 'divide-category': ''"*ngIf="seat.row === 2" >
       <label class="seat-label" [ngClass]="seat.status=== 'booked' ?  'booked'  : seat.status=== 'available' ? 'available' : 'selected'" 
-      matTooltip="Booked By : {{ seat.bookedBy}}">
+      matTooltip="Booked By : {{ seat.bookedBy}}" [matTooltipDisabled]="seat.status=== 'available'">
         {{seat.seatNo}}</label>
     </div>
   </div>
@@ -158,7 +158,8 @@ fxLayoutAlign="space-between center">
 
 <div class="new-booking">
   <button mat-flat-button color="warn" (click)="openBookingForm()"> New Booking</button>
-  <button mat-flat-button class="available-button ml-6"  (click)="bookTrainTickets()"> Confirm Booking</button>
+  <button mat-flat-button class="available-button"  (click)="bookTrainTickets()"> Confirm Booking</button>
+  <button mat-flat-button *ngIf="!displaydata?.available?.length" [style.marginLeft.px]="'10'" color="accent" (click)="clearBooking()" > Clear All Booking</button>
 </div>
 
 </div>

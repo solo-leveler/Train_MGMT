@@ -57,6 +57,19 @@ export class BookTicketComponent implements OnInit {
     }
   }
   
+  async clearBooking() {
+    try {
+      const response = await axios.post('/api/tickets/clearBooking');
+      if (response.data.success) {
+        console.log(response.data.message); // Success message
+      } else {
+        console.log(response.data.message); // Error message
+      }
+    } catch (error) {
+      console.error('Error updating tickets:', error);
+    }
+  }
+
   public ngOnInit(): void {
     //this.bookingInfo = mockResponse;
     this.getTickets()
