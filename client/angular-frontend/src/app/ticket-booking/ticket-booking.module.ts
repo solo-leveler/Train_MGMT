@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatIconModule} from '@angular/material/icon'; 
+import { CustomSnackbarComponent } from './custom-snackbar/custom-snackbar.component';
 
 
 @NgModule({
@@ -16,10 +18,11 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatButtonModule, 
     MatTooltipModule,  
     MatChipsModule,
-    MatSnackBarModule, 
+    MatSnackBarModule,
+    MatIconModule, 
     ReactiveFormsModule
   ],
-  declarations: [BookTicketComponent],
+  declarations: [BookTicketComponent, CustomSnackbarComponent],
   exports: [BookTicketComponent]
 })
 export class TicketBookingModule { }

@@ -1,0 +1,25 @@
+.column {
+    display: block;
+  }
+  
+  .row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .bold {
+    font-weight: bold;
+  }
+  
+  /* Assuming mat-icon is an SVG icon */
+  mat-icon {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  /* Assuming data.message contains HTML */
+  p {
+    margin: 0;
+  }
+  

@@ -4,6 +4,8 @@ import { BookTicketResponseModel, TrainSeatInfoModel } from '../models/book-tick
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import axios from 'axios';
 import { HttpClient } from '@angular/common/http';
+import { CustomSnackbarComponent } from '../custom-snackbar/custom-snackbar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 //import {TrainTicketMockService} from '../services/bus-ticket-service';
 
@@ -23,7 +25,7 @@ export class BookTicketComponent implements OnInit {
   public error!: string;
   public res: any; 
 
-  constructor(private fb: FormBuilder,private httpClient : HttpClient,public bookingInfo : BookTicketResponseModel) {
+  constructor(private fb: FormBuilder,private httpClient : HttpClient,public bookingInfo : BookTicketResponseModel ,private _snackbar:MatSnackBar) {
     this.initateForm();
     //this.getTickets();
   }
@@ -48,7 +50,14 @@ export class BookTicketComponent implements OnInit {
       const response = await axios.post('/api/tickets/bookTrainTickets', this.displaydata.selected);
       if (response.data.success) {
         console.log(response.data.data); // Updated tickets
-        window.alert("Booked Successfully")
+        this._snackbar.openFromComponent(CustomSnackbarComponent,{
+          duration:500,
+          panelClass:['success-outline-snackbar'],
+          data:{
+            title:'Success',
+            message : 'Booked Successfully!!!'
+          }
+        })
       } else {
         console.log(response.data.message); // Error message
       }
@@ -80,7 +89,15 @@ export class BookTicketComponent implements OnInit {
     const userName: string = formValues.controls['name'].value;
     const requiredSeats: number = parseInt(formValues.controls['count'].value);
     if (requiredSeats > 7) {
-      this.error = "Please enter seat number less then 8";
+      //this.error = "Please enter seat number less then 8";
+      this._snackbar.openFromComponent(CustomSnackbarComponent,{
+        duration:500,
+        panelClass:['error-outline-snkackbar'],
+        data:{
+          title:'Error',
+          message : 'Please enter seat number less then 8'
+        }
+      })
     } else if (requiredSeats > 0) {
       this.checkInCategorys(userName, requiredSeats);
     }
