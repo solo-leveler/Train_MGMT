@@ -1,0 +1,7 @@
+p {
+    font-family: Lato;
+  }
+  h3{
+    display: grid;
+    justify-content: space-around;
+  }

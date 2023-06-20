@@ -1,0 +1,10 @@
+<div class="column">
+    <div class="row">
+      <mat-icon *ngIf="matIcon">{{matIcon}}</mat-icon>
+      <div class="column">
+        <p class="bold">{{data.title}}</p>
+        <p [innerHTML]="data.message"></p>
+      </div>
+    </div>
+  </div>
+  

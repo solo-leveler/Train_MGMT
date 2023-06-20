@@ -1,0 +1,39 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+:root{
+    --modal-text-color: #43525B;
+    --color-primary : #2e6bdc;
+    --color-white :  #ffffff;
+    --box-shadow-color: #0000001A;
+    --success-color : #60a058;
+    --error-color : #ED544E;
+    -color-secondary : #959595;
+
+}
+.mat-snack-bar.success-outline-snackbar{
+    color: var(--modal-text-color);
+    background: var(--color-white) !important;
+    border: 2px solid var(--success-color);
+    box-shadow: 0px 0px 8px var(--box-shadow-color);
+    border-radius: 10px;
+    word-break: break-all;
+  }
+    .error-outline-snackbar{
+    color: var(--modal-text-color);
+    background: var(--color-white) !important;
+    border: 2px solid var(--error-color);
+    box-shadow: 0px 0px 8px var(--box-shadow-color);
+    border-radius: 10px;
+    word-break: break-all;
+  }
+  
+  .mat-snack-bar.info-outline-snackbar{
+    color: var(--modal-text-color);
+    background: var(--color-white) !important;
+    border: 2px solid var(--color-secondary);
+    box-shadow: 0px 0px 8px var(--box-shadow-color);
+    border-radius: 10px;
+    word-break: break-all;
+  }
